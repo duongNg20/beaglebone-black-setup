@@ -14,7 +14,7 @@ echo "[act] disable GDM"
 systemctl disable gdm.service
 
 echo "[act] copy prevent HDMI to sleep script"
-cp -v $PWD/bbb_metadata/xorg.conf /etc/X11/xog.conf
+cp -v $PWD/bbb_metadata/xorg.conf /etc/X11/xorg.conf
 
 echo "[act] copy startup script"
 cp -v $PWD/bbb_metadata/col_script.sh /usr/bin
