@@ -1,0 +1,8 @@
+ [Unit]
+  Description = ColumnLight startup script
+  After=syslog.target network.target
+  [Service]
+  Type=simple
+  ExecStart=/usr/bin/col_script.sh
+  [Install]
+  WantedBy=multi-user.target
