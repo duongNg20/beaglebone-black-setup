@@ -1,0 +1,160 @@
+import QtQuick 2.0
+import VFountain.com 1.0
+
+Rectangle
+{
+    id: main_window
+    height: 768
+    width: 1280
+    anchors.centerIn: parent
+
+    color: "#FF000000"
+
+    BBBController{
+        id: main_controller
+        running: true
+        onStateChanged: {
+            console.log("onStateChanged ->" + mystate.toString())
+            switch(mystate)
+            {
+            case "Idle":
+                main_window.state = "Idle"
+                break;
+            case "square":
+                main_window.state = "square"
+                break;
+            case "circle":
+                main_window.state = "circle"
+                break;
+            case "show_logo":
+                main_window.state = "show_logo"
+                break;
+            }
+        }
+    }
+
+    Rectangle {
+        id: display_window
+        anchors.fill: parent
+
+        color: "#FF000000"
+        Image {
+            id: logo
+            opacity: 0
+            source: "Vfountain.png"
+            height: parent.height
+            width: parent.height / 16 * 9
+            anchors.centerIn: parent
+            fillMode: Image.PreserveAspectFit
+        }
+        Rectangle {
+            id: logo_text
+            height: square.height
+            width: square.width
+            x: square.x
+            y:square.y
+            opacity: 0
+            color: square.color
+
+            Behavior on  opacity{
+                    NumberAnimation { duration: 500; easing.type: Easing.OutCurve }
+               }
+
+            Text {
+                id: txtWeb
+                anchors.fill: parent
+                text: qsTr("WWW.AMADA.COM.VN")
+
+                font.pixelSize: 50*0.75
+                font.bold: true
+                verticalAlignment: Text.AlignTop
+                horizontalAlignment: Text.AlignLeft
+                color: "#FFFF0000"
+            }
+        }
+
+        Rectangle {
+            id: square
+            opacity: 0
+
+            height: Math.round(parent.height * .625)
+            width: Math.round(parent.height * .625)
+
+            anchors.centerIn: parent
+            // 1cm ~ 5px
+            // chieu cao
+            anchors.verticalCenterOffset: -53.5
+            // chieu rong
+            anchors.horizontalCenterOffset: -82.5
+
+            color: "#FFFFFFFF"
+            rotation: 0
+
+            NumberAnimation on opacity {id: dimSquare_On; running: false; from:0; to: 1; duration: 4000;easing.type: Easing.Linear}
+        }
+
+        Image {
+            id: circle
+            opacity: 0
+            source: "p500.png"
+//            for 1st center light
+//            height: square.height * 0.74 / 1.3 /67*75
+//            width: square.width *  0.74 / 1.3 /67*75
+
+//            for 2st center light
+//            height: square.height * 0.74 / 1.3 /67*75
+//            width: square.width *  0.74 / 1.3 /67*75
+
+            // 1cm ~ 0.018
+            height: square.height * (0.75 + 0.018 * 6.5) / 1.3
+//            width: square.width *  (0.75 + 0.018 * 1) / 1.3
+            width: height
+
+            x: square.x + (square.width - width)/2
+            y: square.y + (square.height - height) /2
+
+            fillMode: Image.Stretch
+            z:2
+            rotation: 0
+
+            NumberAnimation on opacity {id: dimCircle_On; running: false; from:0; to: 1; duration: 4000; easing.type: Easing.Linear}
+        }
+    }
+
+
+    states: [
+        State {
+            name: "Idle"
+             PropertyChanges {target: logo; opacity: 0}
+             PropertyChanges {target: square; opacity: 0}
+             PropertyChanges {target: circle; opacity: 0}
+//             PropertyChanges {target: dimSquare_On; running: true}
+//             PropertyChanges {target: dimCircle_On; running: true}
+        },
+        State {
+            name: "square"
+            PropertyChanges {target: logo; opacity: 0}
+            PropertyChanges {target: circle; opacity: 0}
+            PropertyChanges {target: square; opacity: 0}
+            PropertyChanges {target: dimSquare_On; running: true}
+//            PropertyChanges {target: dimCircle_On; running: true}
+        },
+        State {
+            name: "circle"
+            PropertyChanges {target: logo; opacity: 0}
+            PropertyChanges {target: square; opacity: 1}
+            PropertyChanges {target: circle; opacity: 0}
+            PropertyChanges {target: dimCircle_On; running: true}
+        },
+        State {
+            name: "show_logo"
+            PropertyChanges {target: logo; opacity: 0}
+            PropertyChanges {target: square; opacity: 0}
+            PropertyChanges {target: circle; opacity: 0}
+            PropertyChanges {target: logo_text; opacity: 1}
+        }
+    ]
+}
+
+
+
