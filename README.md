@@ -11,3 +11,7 @@ Qt 4.8 cross compile from Ubuntu
 3. chmod u+x setup.sh
 4. ./setup.sh
 5. reboot
+
+## Login
+User: root
+Password: huungochttl
